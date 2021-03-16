@@ -8,10 +8,15 @@ public class GameRules : MonoBehaviour
     private string DebugTag = "[DungeonCrawler GameRules]: ";
     private bool DEBUG_init = false;
 
+
     /* --- Components --- */
+
 
     /* --- Internal Variables --- */
     [HideInInspector] public static bool isPaused = false;
+    [HideInInspector] public static int maxLevel = 5;
+    [HideInInspector] public static int[] xpTable = new int[] { 1, 2, 3 };
+
 
     /* --- Methods --- */
     void Start()

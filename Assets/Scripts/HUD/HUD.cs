@@ -32,6 +32,14 @@ public class HUD : MonoBehaviour
         {
             SelectNext();
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            playerState.xp++;
+            playerState.CheckExperience();
+            print("Added Experience");
+        }
+
         UpdateHealth();
     }
 
@@ -62,10 +70,29 @@ public class HUD : MonoBehaviour
 
     }
 
+    void SetMana()
+    {
+
+    }
+
+    void UpdateMana()
+    {
+
+    }
+
+    void SetLevel()
+    {
+
+    }
+
+    void UpdateLevel()
+    {
+
+    }
+
     public void Action()
     {
         if (GameRules.isPaused) { return; }
-
     }
 
     public void Pause()

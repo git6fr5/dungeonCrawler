@@ -12,6 +12,7 @@ public class CharacterMovement : MonoBehaviour
 
     /* --- Components --- */
     public Rigidbody2D body;
+    public GameObject[] dontFlip;
 
 
     /* --- Internal Variables ---*/
@@ -54,6 +55,10 @@ public class CharacterMovement : MonoBehaviour
     {
         facingRight = !facingRight;
         transform.Rotate(0f, 180f, 0f);
+        foreach (GameObject gameObject in dontFlip)
+        {
+            gameObject.transform.Rotate(0f, 180f, 0f);
+        }
     }
 
     public void SetSpeed(float _speed)

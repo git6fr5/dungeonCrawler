@@ -16,12 +16,11 @@ public class CharacterState : MonoBehaviour
     public Collider2D hitbox;
     public Collider2D hull;
 
-    // Overhead UI
-    public Slider overheadHealthBar;
-    public Slider overheadMana;
-    public int overheadLevel;
+    // HUD
+    public HUD hud;
+    public HUDOverhead hudOverhead;
 
-    // Mouse UI
+    // Mouse
     public SpriteRenderer highlight;
     public SpriteRenderer selected;
 
@@ -39,6 +38,14 @@ public class CharacterState : MonoBehaviour
     // Health
     [HideInInspector] public float maxHealth = 1f;
     [HideInInspector] public float health = 1f;
+
+    // Mana
+    [HideInInspector] public float maxMana = 1f;
+    [HideInInspector] public float mana = 1f;
+
+    // Level
+    [HideInInspector] public int level = 0;
+    [HideInInspector] public int xp = 0;
 
     // States
     [HideInInspector] public bool isDead = false;
@@ -85,6 +92,30 @@ public class CharacterState : MonoBehaviour
 
     public void Highlight(bool isHover)
     {
+    }
+
+    public void CheckExperience()
+    {
+        if (level == GameRules.maxLevel) { return; }
+
+        int xpRequired = RequiredExperience();
+        if (xp >= xpRequired)
+        {
+            AddLevel(xpRequired);
+            CheckExperience();
+        }
+    }
+
+    int RequiredExperience()
+    {
+        int index = (level / GameRules.xpTable.Length) + (level % GameRules.xpTable.Length);
+        return GameRules.xpTable[index];
+    }
+
+    void AddLevel(int xpUsed)
+    {
+        xp = xp - xpUsed;
+        level = level + 1;
     }
 
     void MoveFlag()

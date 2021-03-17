@@ -50,12 +50,12 @@ public class HUDOverhead : MonoBehaviour
 
     void SetMana()
     {
-        manaSlider.maxValue = playerState.maxHealth;
+        manaSlider.maxValue = playerState.maxMana;
     }
 
     void UpdateMana()
     {
-        manaSlider.value = playerState.health;
+        manaSlider.value = playerState.mana;
     }
 
     void SetLevel()

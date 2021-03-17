@@ -63,6 +63,7 @@ public class CharacterState : MonoBehaviour
     void Update()
     {
         MoveFlag();
+        DeathFlag();
     }
 
     void FixedUpdate()
@@ -88,6 +89,8 @@ public class CharacterState : MonoBehaviour
     /* --- Methods --- */
     public virtual void Select()
     {
+        HUD hud = GameObject.FindGameObjectsWithTag("HUD")[0].GetComponent<HUD>();
+        hud.Select(this);
     }
 
     public void Highlight(bool isHover)
@@ -122,5 +125,19 @@ public class CharacterState : MonoBehaviour
     {
         characterMovement.horizontalMove = Input.GetAxisRaw("Horizontal");
         characterMovement.verticalMove = Input.GetAxisRaw("Vertical");
+    }
+
+    void DeathFlag()
+    {
+        if (health <= 0)
+        {
+            isDead = true;
+            Death();
+        }
+    }
+
+    void Death()
+    {
+        gameObject.SetActive(false);
     }
 }

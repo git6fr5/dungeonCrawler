@@ -13,6 +13,11 @@ public class HUD : MonoBehaviour
 
     /* --- Components --- */
     public CharacterState playerState;
+    public Slider healthSlider;
+    public Slider manaSlider;
+    public Text nameText;
+    public Image portraitImage;
+    public Text levelText;
 
 
     /* --- Internal Variables --- */
@@ -23,7 +28,9 @@ public class HUD : MonoBehaviour
     void Start()
     {
         if (DEBUG_init) { print(DebugTag + "Activated"); }
+        Select(playerState);
         SetHealth();
+        SetMana();
     }
 
     void Update()
@@ -35,12 +42,15 @@ public class HUD : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            playerState.xp++;
-            playerState.CheckExperience();
-            print("Added Experience");
+            currSelection.health = currSelection.health - 0.2f;
+        }
+        if (Input.GetKeyDown("e"))
+        {
+            currSelection.mana = currSelection.mana - 0.2f;
         }
 
         UpdateHealth();
+        UpdateMana();
     }
 
 
@@ -48,6 +58,10 @@ public class HUD : MonoBehaviour
     public void Select(CharacterState characterState)
     {
         if (GameRules.isPaused) { return; }
+
+        currSelection = characterState;
+        nameText.text = currSelection.name;
+        portraitImage.sprite = currSelection.portrait;
     }
 
     void SelectNext()
@@ -62,37 +76,42 @@ public class HUD : MonoBehaviour
 
     void SetHealth()
     {
-        
+        healthSlider.maxValue = currSelection.maxHealth;
     }
 
     void UpdateHealth()
     {
-
+        healthSlider.value = currSelection.health;
     }
 
     void SetMana()
     {
-
+        manaSlider.maxValue = currSelection.maxMana;
     }
 
     void UpdateMana()
     {
-
+        manaSlider.value = currSelection.mana;
     }
 
     void SetLevel()
     {
-
+        levelText.text = currSelection.level.ToString();
     }
 
     void UpdateLevel()
     {
-
+        levelText.text = currSelection.level.ToString();
     }
 
     public void Action()
     {
         if (GameRules.isPaused) { return; }
+    }
+
+    public void OpenPanel(GameObject _gameObject) 
+    {
+        _gameObject.SetActive(!_gameObject.activeSelf);
     }
 
     public void Pause()

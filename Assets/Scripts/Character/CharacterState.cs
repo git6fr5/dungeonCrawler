@@ -30,6 +30,7 @@ public class CharacterState : MonoBehaviour
 
     // Character Controls
     public bool isControllable;
+    public bool isAttacking;
     public CharacterMovement characterMovement;
     public CharacterInventory characterInventory;
 
@@ -64,6 +65,7 @@ public class CharacterState : MonoBehaviour
     void Update()
     {
         MoveFlag();
+        AttackFlag();
         DeathFlag();
     }
 
@@ -126,6 +128,14 @@ public class CharacterState : MonoBehaviour
     {
         characterMovement.horizontalMove = Input.GetAxisRaw("Horizontal");
         characterMovement.verticalMove = Input.GetAxisRaw("Vertical");
+    }
+
+    void AttackFlag()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && characterInventory.equippedWeapon && !characterInventory.equippedWeapon.isAttacking) 
+        { 
+            characterInventory.equippedWeapon.StartAttack();
+        }
     }
 
     void DeathFlag()

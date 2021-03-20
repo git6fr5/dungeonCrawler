@@ -11,7 +11,13 @@ public class CharacterInventory : MonoBehaviour
 
 
     /* --- Components --- */
-    public GameObject inventory;
+
+    // Inventories
+    public GameObject weaponInventory;
+    public GameObject vialInventory;
+    public GameObject gemInventory;
+    public GameObject oreInventory;
+
     public HUDInventory hudInventory;
 
 
@@ -27,9 +33,16 @@ public class CharacterInventory : MonoBehaviour
     [HideInInspector] public Vial[] blueVials = new Vial[] { null, null, null };
     [HideInInspector] public Vial[] greenVials = new Vial[] { null, null, null };
 
+    // Gems
+    [HideInInspector] public List<Gem> gems = new List<Gem>();
+    [HideInInspector] public List<Ore> ores = new List<Ore>();
+
+
     // Tags
     private string weaponTag = "Weapon";
     private string vialTag = "Vial";
+    private string gemTag = "Gem";
+    private string oreTag = "Ore";
 
     /* --- Unity Methods --- */
     void Start()
@@ -44,7 +57,7 @@ public class CharacterInventory : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider2D)
     {
-        print("entering trigger");
+        //print("entering trigger");
         CheckCollect(collider2D);
     }
 
@@ -60,11 +73,19 @@ public class CharacterInventory : MonoBehaviour
         {
             CollectVial(_object.GetComponent<Vial>());
         }
+        else if (_object.tag == gemTag && _object.GetComponent<Gem>())
+        {
+            CollectGem(_object.GetComponent<Gem>());
+        }
+        else if (_object.tag == oreTag && _object.GetComponent<Ore>())
+        {
+            CollectOre(_object.GetComponent<Ore>());
+        }
     }
 
     void CollectWeapon(Weapon weapon)
     {
-        print("collecting");
+        //print("collecting weapon");
 
         if (!weapon.isCollectible) { return; }
 
@@ -82,7 +103,7 @@ public class CharacterInventory : MonoBehaviour
 
         weapon.isCollectible = false;
         weapon.hitBox.isTrigger = true;
-        weapon.transform.parent = inventory.transform;
+        weapon.transform.parent = weaponInventory.transform;
         weapon.gameObject.SetActive(false);
         if (!equippedWeapon)
         {
@@ -98,8 +119,46 @@ public class CharacterInventory : MonoBehaviour
 
     void Equip(Weapon weapon)
     {
-        print("equipping");
+        //print("equipping");
         equippedWeapon = weapon;
         weapon.gameObject.SetActive(true);
+        AdjustHandle(weapon);
+    }
+
+    void AdjustHandle(Weapon weapon)
+    {
+        weapon.transform.localPosition = -weapon.handle.localPosition;
+    }
+
+    void CollectGem(Gem gem)
+    {
+        //print("collecting gem");
+
+        if (!gem.isCollectible) { return; }
+
+        gems.Add(gem);
+
+        gem.isCollectible = false;
+        gem.hitBox.isTrigger = true;
+        gem.transform.parent = gemInventory.transform;
+        gem.gameObject.SetActive(false);
+
+        hudInventory.UpdateInventory();
+    }
+
+    void CollectOre(Ore ore)
+    {
+        //print("collecting ore");
+
+        if (!ore.isCollectible) { return; }
+
+        ores.Add(ore);
+
+        ore.isCollectible = false;
+        ore.hitBox.isTrigger = true;
+        ore.transform.parent = gemInventory.transform;
+        ore.gameObject.SetActive(false);
+
+        hudInventory.UpdateInventory();
     }
 }

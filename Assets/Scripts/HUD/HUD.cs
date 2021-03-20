@@ -40,15 +40,6 @@ public class HUD : MonoBehaviour
             SelectNext();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            currSelection.health = currSelection.health - 0.2f;
-        }
-        if (Input.GetKeyDown("e"))
-        {
-            currSelection.mana = currSelection.mana - 0.2f;
-        }
-
         UpdateHealth();
         UpdateMana();
     }

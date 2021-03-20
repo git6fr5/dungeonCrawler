@@ -31,6 +31,7 @@ public class CharacterState : MonoBehaviour
     // Character Controls
     public bool isControllable;
     public CharacterMovement characterMovement;
+    public CharacterInventory characterInventory;
 
 
     /* --- Internal Variables --- */

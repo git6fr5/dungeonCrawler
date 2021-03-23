@@ -564,9 +564,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 768383811}
-  - {fileID: 1945115811}
-  - {fileID: 636460269}
+  - {fileID: 1729949706}
+  - {fileID: 2003417388}
+  - {fileID: 1515877430}
   - {fileID: 1096134554}
   - {fileID: 2120407919}
   - {fileID: 1166145905}
@@ -1079,7 +1079,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1164,7 +1164,7 @@ MonoBehaviour:
   m_Follow: {fileID: 704847992}
   m_Lens:
     FieldOfView: 40
-    OrthographicSize: 10
+    OrthographicSize: 5
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -1293,7 +1293,7 @@ GameObject:
   - component: {fileID: 636460269}
   - component: {fileID: 636460270}
   m_Layer: 0
-  m_Name: Legs
+  m_Name: Iron Knight Leggings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1307,11 +1307,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 636460268}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.375, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 369542880}
-  m_RootOrder: 2
+  m_Father: {fileID: 1515877430}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &636460270
 SpriteRenderer:
@@ -1353,7 +1353,7 @@ SpriteRenderer:
   m_SortingLayerID: -178028371
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 77b8aa4cf50ed9d408cbddf113f8b907, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e2d0a429f5d603248882a06b6048f825, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1611,6 +1611,7 @@ GameObject:
   - component: {fileID: 704847990}
   - component: {fileID: 704847989}
   - component: {fileID: 704847993}
+  - component: {fileID: 704847991}
   - component: {fileID: 704847988}
   - component: {fileID: 704847987}
   - component: {fileID: 704847986}
@@ -1723,6 +1724,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   portrait: {fileID: 21300000, guid: e506f8176a948ca4a8f37718f7942218, type: 3}
   isControllable: 1
+  isAttacking: 0
   characterMovement: {fileID: 704847989}
   characterInventory: {fileID: 704847993}
   maxHealth: 1
@@ -1733,6 +1735,21 @@ MonoBehaviour:
   xp: 0
   isDead: 0
   depth: 0
+--- !u!114 &704847991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704847985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd5d08997537c8f4d8a9186391e9e6ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  head: {fileID: 1729949706}
+  body: {fileID: 2003417388}
+  legs: {fileID: 1515877430}
 --- !u!4 &704847992
 Transform:
   m_ObjectHideFlags: 0
@@ -1870,7 +1887,7 @@ GameObject:
   - component: {fileID: 768383811}
   - component: {fileID: 768383812}
   m_Layer: 0
-  m_Name: Head
+  m_Name: Iron Knight Helmet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1884,10 +1901,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 768383810}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 369542880}
+  m_Father: {fileID: 1729949706}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &768383812
@@ -1930,7 +1947,7 @@ SpriteRenderer:
   m_SortingLayerID: -178028371
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 47787db0dbd7a9743a7ceaa78b4beccb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 865c53f8de991fb48a0c61d369a38bf9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2450,6 +2467,11 @@ MonoBehaviour:
   durability: 0
   isCollectible: 1
   isAttacking: 0
+  isBackSwinging: 0
+  isSwinging: 0
+  isResetting: 0
+  originalPosition: {x: 0, y: 0, z: 0}
+  originalRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!212 &906109373
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3187,6 +3209,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1403483094}
   m_CullTransparentMesh: 0
+--- !u!1 &1515877429
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1515877430}
+  m_Layer: 0
+  m_Name: Legs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1515877430
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515877429}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.375, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 636460269}
+  m_Father: {fileID: 369542880}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1552386287
 GameObject:
   m_ObjectHideFlags: 0
@@ -3780,6 +3833,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: 600, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1729949705
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1729949706}
+  m_Layer: 0
+  m_Name: Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1729949706
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1729949705}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 768383811}
+  m_Father: {fileID: 369542880}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1750390961
 GameObject:
   m_ObjectHideFlags: 3
@@ -4220,7 +4304,7 @@ GameObject:
   - component: {fileID: 1945115811}
   - component: {fileID: 1945115812}
   m_Layer: 0
-  m_Name: Body
+  m_Name: Iron Knight Armour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4237,8 +4321,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 369542880}
-  m_RootOrder: 1
+  m_Father: {fileID: 2003417388}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1945115812
 SpriteRenderer:
@@ -4280,7 +4364,7 @@ SpriteRenderer:
   m_SortingLayerID: -178028371
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 62123c8b599dd3149a78308309b56305, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 761a0ff7f7d466c429e209113c96f25a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4291,6 +4375,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2003417387
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2003417388}
+  m_Layer: 0
+  m_Name: Body
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2003417388
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2003417387}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1945115811}
+  m_Father: {fileID: 369542880}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2063763776
 GameObject:
   m_ObjectHideFlags: 0

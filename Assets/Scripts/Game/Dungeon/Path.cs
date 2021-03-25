@@ -13,6 +13,12 @@ public class Path : Dungeon
 
     /* --- Internal Variables --- */
 
+    // Direction
+    public enum Direction
+    {
+        left, top, right, bottom
+    }
+
     // Construction
     [HideInInspector] public int length = 20;
     [HideInInspector] public int maxWidth = 10;
@@ -26,213 +32,156 @@ public class Path : Dungeon
     public override void Update()
     {
         if (!DEBUG_path) { return; }
-        if (Input.GetKeyDown("1"))
-        {
-            SetCenterLine();
-            DrawCenterLine();
-            PrintGrid();
-            SetTilemap();
-        }
-        if (Input.GetKeyDown("2"))
-        {
-            SetWallLine(0, center - maxWidth, center, length); // innerX running along Y
-            SetWallLine(1, center, center + maxWidth, length); // innerY running along X
-            DrawWallLines();
-            PrintGrid();
-            SetTilemap();
-        }
-        if (Input.GetKeyDown("3"))
-        {
-            FillWalls();
-            PrintGrid();
-            SetTilemap();
-        }
-        if (Input.GetKeyDown("4"))
-        {
-            SetCorners();
-            PrintGrid();
-            SetTilemap();
-        }
-        if (Input.GetKeyDown("0"))
-        {
-            SetGrid();
-            PrintGrid();
-            SetTilemap();
-        }
     }
 
     /* --- Methods --- */
-    public void Construct(int _maxWidth, int _length, int _direction, bool printGrid = false, bool printTileMap = false)
+    public void ConnectBlocks(int[][] grid, int[][] nodes0, int[][] nodes1)
     {
-        maxWidth = _maxWidth;
-        length = _length;
-        direction = _direction;
-        center = (int)(maxWidth * variance / 2);
+        int minDist = grid.Length * grid.Length + grid[0].Length * grid[0].Length;
+        int[] minNodes = new int[2];
 
-        SetGrid();
-        SetCenterLine();
-        DrawCenterLine();
-        SetWallLine(0, center - maxWidth, center, length); // innerX running along Y
-        SetWallLine(1, center, center + maxWidth, length); // innerY running along X
-        DrawWallLines();
-        FillWalls();
-        SetCorners();
-
-        if (printGrid) { PrintGrid(); }
-        if (printTileMap) { SetTilemap(); }
-    }
-
-    public override void SetGrid()
-    {
-        int[] shapeList = new int[] { 0, 0 };
-        shapeList[direction] = maxWidth * variance;
-        shapeList[(direction + 1) % 2] = length;
-        sizeVertical = shapeList[0];
-        sizeHorizontal = shapeList[1];
-
-        grid = new int[sizeVertical][];
-        for (int i = 0; i < sizeVertical; i++)
+        for (int i = 0; i < nodes0.Length; i++)
         {
-            grid[i] = new int[sizeHorizontal];
-        }
-    }
-
-    void SetCenterLine()
-    {
-        int prevPoint = center;
-        int[] line = new int[length];
-
-        for (int i = 0; i < length; i++)
-        {
-            int point = prevPoint + Random.Range(-1, 2);
-            if (point < center - maxWidth)
+            for (int j = 0; j < nodes1.Length; j++)
             {
-                point = point + 1;
-            }
-            else if (point > center + maxWidth)
-            {
-                point = point - 1;
-            }
-            line[i] = point;
-        }
-        centerLine = line;
-    }
-
-    void DrawCenterLine()
-    {
-        for (int i = 0; i < length; i++)
-        {
-            if (direction == 1)
-            {
-                grid[i][centerLine[i]] = 1;
-            }
-            else if (direction == 0)
-            {
-                grid[centerLine[i]][i] = 1;
-            }
-        }
-    }
-
-    void SetWallLine(int index, int innerBound, int upperBound, int axisLength)
-    {
-        int prevPoint = Random.Range(innerBound, upperBound);
-        int[] wallLine = new int[axisLength];
-        for (int i = 0; i < axisLength; i++)
-        {
-            int point = prevPoint + Random.Range(-1, 2);
-            if (point > upperBound - 1) { point = point - 1; }
-            if (point < innerBound + 1) { point = point + 1; }
-            wallLine[i] = point;
-            prevPoint = point;
-        }
-        wallLines[index] = wallLine;
-    }
-
-    void DrawWallLines()
-    {
-        for (int i = 0; i < length; i++)
-        {
-            if (direction == 1)
-            {
-                grid[i][wallLines[0][i]] = 2;
-                grid[i][wallLines[1][i]] = 3;
-            }
-            else if (direction == 0)
-            {
-                grid[wallLines[0][i]][i] = 4;
-                grid[wallLines[1][i]][i] = 5;
-            }
-        }
-    }
-
-    void FillWalls()
-    {
-        for (int i = 0; i < sizeVertical; i++)
-        {
-            for (int j = 0; j < sizeHorizontal; j++)
-            {
-                int k;
-                int l;
-                if (direction == 0)
+                int dist = ConnectNodes(grid, nodes0[i], nodes1[j]);
+                if (dist < minDist)
                 {
-                    k = j;
-                    l = i; 
-                }
-                else
-                {
-                    k = i;
-                    l = j;
-                }
-                int min = wallLines[0][k]; // 3 left
-                int max = wallLines[1][k]; // 4 right
-
-                if (l > min && l < max)
-                {
-                    grid[i][j] = 1;
+                    minDist = dist;
+                    minNodes = new int[2] { i, j };
                 }
             }
         }
+
+        Direction node0Direction = (Direction)minNodes[0];
+        Direction node1Direction = (Direction)minNodes[1];
+
+        int[][] newNodes = ExtendPath(grid, nodes0[minNodes[0]], nodes1[minNodes[1]], node0Direction, node1Direction, 1);
+        int[] connectDist = LinearDistances(newNodes[0], newNodes[1]);
+        ManhattanPath(grid, newNodes[0], newNodes[1], connectDist[0], connectDist[1]);
     }
 
-    void SetCorners()
+    int ConnectNodes(int[][] grid, int[] node0, int[] node1)
     {
-        for (int l = 1; l < length-1; l++)
-        {
-            int[] k = new int[] { wallLines[0][l], wallLines[1][l] };
-            if (direction == 0)
-            {
-                CheckCorner(k[0], l, new int[] { 0, 1 }, new int[] { 6, 7, 8 }); // right/left corners along top wall
-                CheckCorner(k[1], l, new int[] { 0, 1 }, new int[] { 9, 10, 11 }); // right/left corners along top wall
-            }
-            if (direction == 1)
-            {
-                CheckCorner(l, k[0], new int[] { 1, 0 }, new int[] { 10, 7, 12 }); // top/bottom corners along right wall
-                CheckCorner(l, k[1], new int[] { 1, 0 }, new int[] { 9, 6, 13 }); // top/bottom corners along left wall
-            }
-        }
+        int maxDist = ManhattanDistance(node0, node1);
+        return maxDist;
     }
 
-    void CheckCorner(int i, int j, int[] indexes, int[] values)
+    int ManhattanDistance(int[] node0, int[] node1)
     {
-        int value = -1;
-        if (grid[i + indexes[0]][j + indexes[1]] == 0)
-        {
-            value = 0;
-        }
-        if (grid[i - indexes[0]][j - indexes[1]] == 0)
-        {
-            value = 1;
-        }
-        if (grid[i - indexes[0]][j - indexes[1]] == 0 && grid[i + indexes[0]][j + indexes[1]] == 0)
-        {
-            value = 2;
-        }
-
-        if (value == -1)
-        {
-            return;
-        }
-
-        grid[i][j] = values[value];
+        int dist1 = Mathf.Abs(node0[0] - node1[0]);
+        int dist2 = Mathf.Abs(node0[1] - node1[1]);
+        return dist1 + dist2;
     }
+
+    int[] LinearDistances(int[] node0, int[] node1)
+    {
+        print("Calculting distance between " + node0[0].ToString() + ", " + node0[1].ToString() + " and " + node1[0].ToString() + ", " + node1[1].ToString());
+        int dist1 = node0[0] - node1[0];
+        int dist2 = node0[1] - node1[1];
+        return new int[2] { dist1, dist2 };
+    }
+
+    int[][] ExtendPath(int[][] grid, int[] node0, int[] node1, Direction node0Direction, Direction node1Direction, int extensionLength)
+    {
+        int[] move0 = Move(grid, node0[0], node0[1], node0Direction);
+        int[] move1 = Move(grid, node1[0], node1[1], node1Direction);
+
+        int[] newNode0 = new int[] { node0[0] + move0[0], node0[1] + move0[1] };
+        int[] newNode1 = new int[] { node1[0] + move1[0], node1[1] + move1[1] };
+
+        grid[newNode0[0]][newNode0[1]] = 15;
+        grid[newNode1[0]][newNode1[1]] = 15;
+
+        int[][] newNodes = new int[2][] { newNode0, newNode1 };
+
+        if (extensionLength > 0) { newNodes = ExtendPath(grid, newNode0, newNode1, node0Direction, node1Direction, extensionLength - 1); }
+
+        return newNodes;
+    }
+
+    void ManhattanPath(int[][] grid, int[] startNode, int[] endNode, int slopeRise, int slopeRun)
+    {
+        int[] node = startNode;
+
+        Direction directionRise;
+        Direction directionRun;
+
+        if (Mathf.Sign(slopeRise) == -1f) { directionRise = Direction.bottom; }
+        else { directionRise = Direction.top; }
+
+        if (Mathf.Sign(slopeRun) == 1f) { directionRun = Direction.left; }
+        else { directionRun = Direction.right; }
+
+        int valueRise = (int)Mathf.Abs(slopeRise);
+        int valueRun = (int)Mathf.Abs(slopeRun);
+
+        print("ValueRise: " + valueRise.ToString());
+        print("ValueRun: " + valueRun.ToString());
+
+        print(node[0].ToString() + ", " + node[1].ToString());
+        bool isInEmptySpace = true;
+
+        for (int j = 0; j < valueRise; j++)
+        {
+            int[] move = Move(grid, node[0], node[1], directionRise);
+            node = new int[] { node[0] + move[0], node[1] + move[1] };
+            isInEmptySpace = SetPath(grid, node, isInEmptySpace);
+            if (node == endNode) { return; }
+
+        }
+
+        for (int j = 0; j < valueRun; j++)
+        {
+            int[] move = Move(grid, node[0], node[1], directionRun);
+            node = new int[] { node[0] + move[0], node[1] + move[1] };
+            isInEmptySpace = SetPath(grid, node, isInEmptySpace);
+            if (node == endNode) { return; }
+        }
+    }
+
+    int[] Move(int[][] grid, int i, int j, Direction direction)
+    {
+        if (j == 0 && direction == Direction.left) { return new int[] { 0, 0}; }
+        if (j == grid[0].Length && direction == Direction.right) { return new int[] { 0, 0 }; }
+        if (i == 0 && direction == Direction.top) { return new int[] { 0, 0 }; }
+        if (i == grid.Length && direction == Direction.bottom) { return new int[] { 0, 0 }; }
+
+        if (direction == Direction.left) { return new int[] { 0, -1 }; }
+        if (direction == Direction.right) { return new int[] { 0, 1 }; }
+        if (direction == Direction.top) { return new int[] { -1, 0 }; }
+        if (direction == Direction.bottom) { return new int[] { 1, 0 }; }
+
+        return new int[] { 0, 0 };
+    }
+
+    bool SetPath(int[][]grid, int[] node, bool isInEmptySpace)
+    {
+        if (grid[node[0]][node[1]] == 0)
+        {
+            grid[node[0]][node[1]] = 15;
+            isInEmptySpace = true;
+        }
+        else if (grid[node[0]][node[1]] < 14)
+        {
+            if (isInEmptySpace) { grid[node[0]][node[1]] = 14; }
+            isInEmptySpace = false;
+        }
+        return isInEmptySpace;
+    }
+
+    Direction GetOppositeDirection(Direction direction)
+    {
+        int _direction = (int)direction;
+        _direction = (_direction + 2) % 4;
+        return (Direction)_direction;
+    }
+
+    int GetDirectionIndex(Direction direction)
+    {
+        int _direction = (int)direction;
+        int index = (_direction + 1) % 2;
+        return index;
+    }
+
 }

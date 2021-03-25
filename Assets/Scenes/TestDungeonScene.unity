@@ -545,6 +545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e3c933f88cfd2643913927833ed17fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DEBUG_dungeon: 0
   block: {fileID: 0}
   path: {fileID: 0}
   textBox: {fileID: 1285009896}
@@ -564,6 +565,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6b8c39d8afadeef49b675b1e9e09773c, type: 2}
   - {fileID: 11400000, guid: 5e6119b81ac6d0e478e9e39db9fa4bfc, type: 2}
   - {fileID: 11400000, guid: 1bb1bcea15381af47a58aa9649f3c779, type: 2}
+  - {fileID: 11400000, guid: 1bbf21ee289787d409c244a1c65dab76, type: 2}
+  - {fileID: 11400000, guid: ed71f131833d3e44883fcb15c9e17f6f, type: 2}
   sizeVertical: 0
   sizeHorizontal: 0
   DEBUG_path: 0
@@ -668,6 +671,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fdd883fb7aee6746a12834b67baea84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DEBUG_dungeon: 0
   block: {fileID: 0}
   path: {fileID: 0}
   textBox: {fileID: 1285009896}
@@ -687,6 +691,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6b8c39d8afadeef49b675b1e9e09773c, type: 2}
   - {fileID: 11400000, guid: 5e6119b81ac6d0e478e9e39db9fa4bfc, type: 2}
   - {fileID: 11400000, guid: 1bb1bcea15381af47a58aa9649f3c779, type: 2}
+  - {fileID: 11400000, guid: 1bbf21ee289787d409c244a1c65dab76, type: 2}
+  - {fileID: 11400000, guid: ed71f131833d3e44883fcb15c9e17f6f, type: 2}
   sizeVertical: 20
   sizeHorizontal: 35
   DEBUG_block: 0
@@ -781,6 +787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6aa4fb9564503a429e83eb94635c937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DEBUG_dungeon: 0
   block: {fileID: 1879687537}
   path: {fileID: 1694331480}
   textBox: {fileID: 1285009896}
@@ -801,6 +808,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5e6119b81ac6d0e478e9e39db9fa4bfc, type: 2}
   - {fileID: 11400000, guid: 1bb1bcea15381af47a58aa9649f3c779, type: 2}
   - {fileID: 11400000, guid: 1bbf21ee289787d409c244a1c65dab76, type: 2}
+  - {fileID: 11400000, guid: ed71f131833d3e44883fcb15c9e17f6f, type: 2}
   sizeVertical: 50
   sizeHorizontal: 50
 --- !u!4 &2112407680

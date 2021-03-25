@@ -24,54 +24,58 @@ public class Dungeon : MonoBehaviour
     /* --- Internal Variables --- */
 
     // Grid 
-    public int sizeVertical = 40;
-    public int sizeHorizontal = 40;
+    public int sizeVertical = 200;
+    public int sizeHorizontal = 200;
     [HideInInspector] public int[][] grid;
+    [HideInInspector] public List<int[][]> nodes = new List<int[][]>();
 
     // Offset
     protected int horOffset = 20;
     protected int vertOffset = 20;
-    float anchorOffsetHor = 0f;
-    float anchorOffsetVert = 0f;
-    float blockScale = 0.2f;
+    int numBlockRows = 3;
+    int numBlockColumns = 3;
+    float minPathScale = 0.2f;
 
     /* --- Unity Methods --- */
     public virtual void Update()
     {
+        if (Input.GetKeyDown("0"))
+        {
+            nodes = new List<int[][]>();
+            SetGrid();
+            PrintGrid();
+            SetTilemap();
+        }
         if (Input.GetKeyDown("1"))
         {
-            block.SetOffset(-20, 20);
-            block.Construct(20, 20, true, true);
+            FillBlocksOrderly();
+            PrintGrid();
+            SetTilemap();
         }
         if (Input.GetKeyDown("2"))
         {
-            path.SetOffset(10, 20);
-            path.Construct(5, 20, 1, true, true);
+            FillBlocksRandomly();
+            PrintGrid();
+            SetTilemap();
         }
         if (Input.GetKeyDown("3"))
         {
-            SetGrid();
+            AddBlock(0.2f, 0.2f, new float[] { 0.5f, 0f } );
+            AddBlock(0.2f, 0.2f, new float[] { 0.5f, 1f });
             PrintGrid();
             SetTilemap();
         }
         if (Input.GetKeyDown("4"))
         {
-            float[] anchor = new float[] { anchorOffsetVert + Random.Range(0f, blockScale), anchorOffsetHor };
-            AddBlock(blockScale, anchor);
+            ConnectAllOrderly();
             PrintGrid();
             SetTilemap();
-            anchorOffsetHor = anchorOffsetHor + Random.Range(1.2f*blockScale, 2*blockScale);
-            if (anchorOffsetHor > 1f)
-            {
-                anchorOffsetHor = 0f + Random.Range(0f, blockScale);
-                anchorOffsetVert = anchorOffsetVert + blockScale*2;
-            }
-            /*if (anchorOffsetVert + blockScale * 0.8f > 1f)
-            {
-                anchorOffsetHor = 0f;
-                anchorOffsetHor = 0f;
-                SetGrid();
-            }*/
+        }
+        if (Input.GetKeyDown("5"))
+        {
+            ConnectAllRandomly();
+            PrintGrid();
+            SetTilemap();
         }
     }
 
@@ -91,9 +95,56 @@ public class Dungeon : MonoBehaviour
         }
     }
 
-    void AddBlock(float scale, float[] anchor)
+    void FillBlocksOrderly()
+    { 
+        int numPathHor = numBlockColumns - 1;
+        float totalPathLengthHor = numPathHor * minPathScale;
+        if (totalPathLengthHor > 0.5f) { return; }
+
+        int numPathVert = numBlockRows - 1;
+        float totalPathLengthVert = numPathVert * minPathScale;
+        if (totalPathLengthVert > 0.5f) { return; }
+
+        float blockScaleHor = (1 - totalPathLengthHor) / numBlockColumns;
+        float blockScaleVert = (1 - totalPathLengthVert) / numBlockRows;
+
+        for (int i = 0; i < numBlockRows; i++)
+        {
+            for (int j = 0; j < numBlockRows; j++)
+            {
+                float anchorOffsetHor = blockScaleHor * (j + Random.Range(0.5f, 0.8f)) + minPathScale * j / Random.Range(1f, 2f);
+                float anchorOffsetVert = blockScaleVert * (i + Random.Range(0.35f, 0.65f)) + minPathScale * i / Random.Range(1f, 2f);
+                float[] anchor = new float[] { anchorOffsetVert, anchorOffsetHor };
+                AddBlock(blockScaleVert, blockScaleHor, anchor);
+            }
+        }
+    }
+
+    void FillBlocksRandomly()
     {
-        block.Construct((int) (sizeVertical * scale), (int) (sizeHorizontal * scale));
+        float anchorOffsetHor = 0f;
+        float anchorOffsetVert = 0f;
+        float blockScale = 0.2f;
+
+        for (int i = 0; i < numBlockRows; i++)
+        {
+            for (int j = 0; j < numBlockRows; j++)
+            {
+                float[] anchor = new float[] { anchorOffsetVert + Random.Range(0f, blockScale), anchorOffsetHor };
+                AddBlock(blockScale, blockScale, anchor);
+                anchorOffsetHor = anchorOffsetHor + Random.Range(1.2f * blockScale, 2 * blockScale);
+                if (anchorOffsetHor > 1f)
+                {
+                    anchorOffsetHor = 0f + Random.Range(0f, blockScale);
+                    anchorOffsetVert = anchorOffsetVert + blockScale * 2;
+                }
+            }
+        }
+    }
+
+    void AddBlock(float scaleVert, float scaleHor, float[] anchor)
+    {
+        block.Construct((int)(sizeVertical * scaleVert), (int)(sizeHorizontal * scaleHor));
         int[][] subGrid = block.grid;
 
         AttachToGrid(subGrid, anchor);
@@ -115,9 +166,49 @@ public class Dungeon : MonoBehaviour
                 }
             }
         }
+
+        int[] leftNode = new int[2] { block.leftNode[0] + anchor[0], block.leftNode[1] + anchor[1] };
+        int[] rightNode = new int[2] { block.rightNode[0] + anchor[0], block.rightNode[1] + anchor[1] };
+        int[] topNode = new int[2] { block.topNode[0] + anchor[0], block.topNode[1] + anchor[1] };
+        int[] bottomNode = new int[2] { block.bottomNode[0] + anchor[0], block.bottomNode[1] + anchor[1] };
+
+        nodes.Add(new int[4][] { leftNode, topNode, rightNode, bottomNode });
     }
 
-    protected void PrintGrid()
+    void ConnectAllOrderly()
+    {
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            int rightIndex = i + 1;
+            if (rightIndex % numBlockColumns < i % numBlockColumns) { }
+            else
+            {
+                path.ConnectBlocks(grid, nodes[i], nodes[rightIndex]);
+            }
+
+            int bottomIndex = i + numBlockColumns;
+            if (bottomIndex >= nodes.Count) { }
+            else
+            {
+                path.ConnectBlocks(grid, nodes[i], nodes[bottomIndex]);
+            }
+        }
+    }
+
+    void ConnectAllRandomly()
+    {
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            int[][] randomNode = nodes[Random.Range(0, i)];
+            if (nodes[i] != randomNode)
+            {
+                path.ConnectBlocks(grid, nodes[i], randomNode);
+            }
+        }
+    }
+
+
+    public void PrintGrid()
     {
         string text = "";
         for (int i = 0; i < sizeVertical; i++)

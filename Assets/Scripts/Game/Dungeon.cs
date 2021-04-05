@@ -20,20 +20,22 @@ public class Dungeon : MonoBehaviour
     public Text textBox;
     public Tilemap tilemap;
     public TileBase[] tileArray; // 0:Empty, 1:Center, 2:Left, 3:Right, 4:Top, 5:Bottom 6:TopRight 7:TopLeft 8:TopRoundy 9:BottomLeft 10:BottomRight 11:BottomRoundy 12:LeftRoundy 13:RightRoundy
+    public GameObject[] terrain; // 0:Inner, 1:Wall, 2:Corner;
+    public Transform terrainParent;
 
     /* --- Internal Variables --- */
 
     // Grid 
-    public int sizeVertical = 200;
-    public int sizeHorizontal = 200;
+    public int sizeVertical = 50;
+    public int sizeHorizontal = 50;
     [HideInInspector] public int[][] grid;
     [HideInInspector] public List<int[][]> nodes = new List<int[][]>();
 
     // Offset
-    protected int horOffset = 20;
-    protected int vertOffset = 20;
-    int numBlockRows = 3;
-    int numBlockColumns = 3;
+    protected int horOffset = 0;
+    protected int vertOffset = 0;
+    public int numBlockRows = 3;
+    public int numBlockColumns = 3;
     float minPathScale = 0.2f;
 
     /* --- Unity Methods --- */
@@ -42,6 +44,7 @@ public class Dungeon : MonoBehaviour
         if (Input.GetKeyDown("0"))
         {
             nodes = new List<int[][]>();
+            SetOffset((int)sizeHorizontal / 2, (int)sizeVertical / 2);
             SetGrid();
             PrintGrid();
             SetTilemap();
@@ -51,6 +54,14 @@ public class Dungeon : MonoBehaviour
             FillBlocksOrderly();
             PrintGrid();
             SetTilemap();
+        }
+        if (Input.GetKeyDown("q"))
+        {
+            /*nodes = new List<int[][]>();
+            SetOffset((int)sizeHorizontal / 2, (int)sizeVertical / 2);
+            SetGrid();
+            FillBlocksOrderly();*/
+            SetTerrain();
         }
         if (Input.GetKeyDown("2"))
         {
@@ -229,6 +240,35 @@ public class Dungeon : MonoBehaviour
             for (int j = 0; j < sizeHorizontal; j++)
             {
                 if (tileArray[grid[i][j]]) { tilemap.SetTile(new Vector3Int(j - horOffset, -(i - vertOffset), 0), tileArray[grid[i][j]]); }
+            }
+        }
+    }
+
+    protected void SetTerrain()
+    {
+        for (int i = 0; i < sizeVertical; i++)
+        {
+            for (int j = 0; j < sizeHorizontal; j++)
+            {
+                if (grid[i][j] == 1) { Instantiate(terrain[0], new Vector3(j - horOffset, -(i - vertOffset), 0), Quaternion.identity, null); }
+
+                Quaternion rotationLeft = Quaternion.identity;
+                Quaternion rotationRight = Quaternion.identity;
+                Quaternion rotationTop = Quaternion.identity;
+                Quaternion rotationBottom = Quaternion.identity;
+
+                rotationLeft.eulerAngles = new Vector3(-90, 0, 0);
+                rotationRight.eulerAngles = new Vector3(90, 90, -90);
+                rotationTop.eulerAngles = new Vector3(0, 90, -90);
+                rotationBottom.eulerAngles = new Vector3(180, 90, -90);
+
+                GameObject _object = null;
+                if (grid[i][j] == 2) { _object = Instantiate(terrain[1], new Vector3(j - horOffset, -(i - vertOffset), 0), rotationLeft, null); }
+                if (grid[i][j] == 3) { _object = Instantiate(terrain[1], new Vector3(j - horOffset, -(i - vertOffset), 0), rotationRight, null); }
+                if (grid[i][j] == 4) { _object = Instantiate(terrain[1], new Vector3(j - horOffset, -(i - vertOffset), 0), rotationTop, null); }
+                if (grid[i][j] == 5) { _object = Instantiate(terrain[1], new Vector3(j - horOffset, -(i - vertOffset), 0), rotationBottom, null); }
+
+                if (_object) { _object.AddComponent<BoxCollider>(); }
             }
         }
     }

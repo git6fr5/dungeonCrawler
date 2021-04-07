@@ -176,7 +176,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 15
+  orthographic size: 20
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -502,80 +502,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1 &1694331477
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1694331479}
-  - component: {fileID: 1694331480}
-  m_Layer: 0
-  m_Name: PathGenerator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1694331479
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694331477}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2112407680}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1694331480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694331477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3c933f88cfd2643913927833ed17fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DEBUG_dungeon: 0
-  block: {fileID: 0}
-  path: {fileID: 0}
-  textBox: {fileID: 1285009896}
-  tilemap: {fileID: 1361722516}
-  tileArray:
-  - {fileID: 11400000, guid: c03d50a4fddd4ee41a3c099beee410da, type: 2}
-  - {fileID: 11400000, guid: 999bebbfe6ac8ca41b68c19b6f723278, type: 2}
-  - {fileID: 11400000, guid: 7e92ca4111d57f64b8596f49d97d51e4, type: 2}
-  - {fileID: 11400000, guid: eea762e3d4563454ca851815641124c5, type: 2}
-  - {fileID: 11400000, guid: e64f939e9ad72e74cb1a7528b46f7cc6, type: 2}
-  - {fileID: 11400000, guid: 0baecd899d0ba3c40a9706f2d05a6dda, type: 2}
-  - {fileID: 11400000, guid: 9ab07e48a6f62c04b8b136f419a614a3, type: 2}
-  - {fileID: 11400000, guid: a8a8e69d38ac6d04c9f9d0dd3a7837bb, type: 2}
-  - {fileID: 11400000, guid: ca6c7a67921615947bbcc3be31f32f46, type: 2}
-  - {fileID: 11400000, guid: 7b0a5e61a71b72d4e88d4bc7d0b6a74b, type: 2}
-  - {fileID: 11400000, guid: 04323d1e48e44dc47a04ef29d0f31991, type: 2}
-  - {fileID: 11400000, guid: 6b8c39d8afadeef49b675b1e9e09773c, type: 2}
-  - {fileID: 11400000, guid: 5e6119b81ac6d0e478e9e39db9fa4bfc, type: 2}
-  - {fileID: 11400000, guid: 1bb1bcea15381af47a58aa9649f3c779, type: 2}
-  - {fileID: 11400000, guid: 1bbf21ee289787d409c244a1c65dab76, type: 2}
-  - {fileID: 11400000, guid: ed71f131833d3e44883fcb15c9e17f6f, type: 2}
-  sizeVertical: 0
-  sizeHorizontal: 0
-  DEBUG_path: 0
-  length: 40
-  maxWidth: 7
-  direction: 0
-  variance: 3
-  center: 0
-  centerLine: 
 --- !u!1 &1801267192
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,78 +568,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1879687536
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1879687538}
-  - component: {fileID: 1879687537}
-  m_Layer: 0
-  m_Name: BlockGenerator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1879687537
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1879687536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fdd883fb7aee6746a12834b67baea84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DEBUG_dungeon: 0
-  block: {fileID: 0}
-  path: {fileID: 0}
-  textBox: {fileID: 1285009896}
-  tilemap: {fileID: 1361722516}
-  tileArray:
-  - {fileID: 11400000, guid: c03d50a4fddd4ee41a3c099beee410da, type: 2}
-  - {fileID: 11400000, guid: 999bebbfe6ac8ca41b68c19b6f723278, type: 2}
-  - {fileID: 11400000, guid: 7e92ca4111d57f64b8596f49d97d51e4, type: 2}
-  - {fileID: 11400000, guid: eea762e3d4563454ca851815641124c5, type: 2}
-  - {fileID: 11400000, guid: e64f939e9ad72e74cb1a7528b46f7cc6, type: 2}
-  - {fileID: 11400000, guid: 0baecd899d0ba3c40a9706f2d05a6dda, type: 2}
-  - {fileID: 11400000, guid: 9ab07e48a6f62c04b8b136f419a614a3, type: 2}
-  - {fileID: 11400000, guid: a8a8e69d38ac6d04c9f9d0dd3a7837bb, type: 2}
-  - {fileID: 11400000, guid: ca6c7a67921615947bbcc3be31f32f46, type: 2}
-  - {fileID: 11400000, guid: 7b0a5e61a71b72d4e88d4bc7d0b6a74b, type: 2}
-  - {fileID: 11400000, guid: 04323d1e48e44dc47a04ef29d0f31991, type: 2}
-  - {fileID: 11400000, guid: 6b8c39d8afadeef49b675b1e9e09773c, type: 2}
-  - {fileID: 11400000, guid: 5e6119b81ac6d0e478e9e39db9fa4bfc, type: 2}
-  - {fileID: 11400000, guid: 1bb1bcea15381af47a58aa9649f3c779, type: 2}
-  - {fileID: 11400000, guid: 1bbf21ee289787d409c244a1c65dab76, type: 2}
-  - {fileID: 11400000, guid: ed71f131833d3e44883fcb15c9e17f6f, type: 2}
-  sizeVertical: 20
-  sizeHorizontal: 35
-  DEBUG_block: 0
-  leftNode: 0000000000000000
-  rightNode: 0000000000000000
-  topNode: 0000000000000000
-  bottomNode: 0000000000000000
---- !u!4 &1879687538
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1879687536}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2112407680}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2044511883
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,7 +606,7 @@ Transform:
   m_GameObject: {fileID: 2044511883}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1361722514}
   m_Father: {fileID: 0}
@@ -768,6 +622,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2112407680}
   - component: {fileID: 2112407679}
+  - component: {fileID: 2112407681}
   m_Layer: 0
   m_Name: DungeonGenerator
   m_TagString: Untagged
@@ -787,9 +642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6aa4fb9564503a429e83eb94635c937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DEBUG_dungeon: 0
-  block: {fileID: 1879687537}
-  path: {fileID: 1694331480}
+  pathfind2D: {fileID: 2112407681}
   textBox: {fileID: 1285009896}
   tilemap: {fileID: 1361722516}
   tileArray:
@@ -809,8 +662,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1bb1bcea15381af47a58aa9649f3c779, type: 2}
   - {fileID: 11400000, guid: 1bbf21ee289787d409c244a1c65dab76, type: 2}
   - {fileID: 11400000, guid: ed71f131833d3e44883fcb15c9e17f6f, type: 2}
-  sizeVertical: 50
-  sizeHorizontal: 50
 --- !u!4 &2112407680
 Transform:
   m_ObjectHideFlags: 0
@@ -821,9 +672,19 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 1}
-  m_Children:
-  - {fileID: 1879687538}
-  - {fileID: 1694331479}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2112407681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2112407678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f0496bf59340b24cae2af2458d384b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

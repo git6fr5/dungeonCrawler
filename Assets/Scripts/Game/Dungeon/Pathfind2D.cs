@@ -9,22 +9,9 @@ public class Pathfind2D : MonoBehaviour
 {
 
     static float waitTime = 0.02f;
-    public Coordinate2D[][] lastCoordinateGrid;
-
-    void Update()
-    {
-        if (Input.GetMouseButton(0) && lastCoordinateGrid)
-        {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            int gridY = -(int)mousePos.y + lastCoordinateGrid.Length;
-            int gridX = (int)mousePos.x + lastCoordinateGrid[0].Length;
-            if (lastCoordinateGrid[gridY][gridX]) { print(lastCoordinateGrid[gridY][gridX].distance); }
-        }
-    }
 
     public int[][] AStar(int[][] grid, List<Coordinate2D> nodes)
     {
-
         // Discard nodes that can't be pathed to
         for (int i = nodes.Count - 1; i >= 0; i--)
         {
@@ -52,21 +39,15 @@ public class Pathfind2D : MonoBehaviour
             Coordinate2D start = nodes[i];
             Coordinate2D end = nodes[i + 1];
 
-            // Initialize a coordinate grid
-            Coordinate2D[][] coordinateGrid = new Coordinate2D[grid.Length][];
-            for (int i = 0; i < coordinateGrid.Length; i++)
-            {
-                coordinateGrid[i] = new int[grid[0].Length];
-            }
-
-            StartCoroutine(IEAstar(waitTime, grid, start, end, coordinateGrid, 0));
+            List<Coordinate2D> trail = new List<Coordinate2D>();
+            StartCoroutine(IEAstar(waitTime, grid, start, end, trail, 0));
         }
 
 
         return grid;
     }
 
-    public IEnumerator IEAstar(float elapsedTime, int[][] grid, Coordinate2D node, Coordinate2D end, Coordinate2D[][] coordinateGrid, int numItterations)
+    public IEnumerator IEAstar(float elapsedTime, int[][] grid, Coordinate2D node, Coordinate2D end, List<Coordinate2D> trail, int numItterations)
     {
         yield return new WaitForSeconds(elapsedTime);
 
@@ -77,7 +58,6 @@ public class Pathfind2D : MonoBehaviour
         {
             if (adjacentNode.IsValid(grid) && adjacentNode.IsEmpty(grid))
             {
-                adjacentNode.SetDistance(node.distance + ManhattanDistance(node, adjacentNode));
                 float heuristic = ManhattanDistance(adjacentNode, end);
                 if (heuristic < minHeuristic)
                 {
@@ -87,17 +67,16 @@ public class Pathfind2D : MonoBehaviour
             }
         }
 
-        _node.MakePathTo(grid, start, distance, end, minHeuristic, coordinateGrid);
+        trail = _node.MakePathTo(grid, end, minHeuristic, trail);
 
         if (_node == end || minHeuristic == 1 || numItterations > grid.Length * grid[0].Length)
         {
-            lastCoordinateGrid = coordinateGrid;
             yield return null;
         }
         else
         {
-            Coordinate2D nextNode = GetNextNode(_node, minHeuristic, coordinateGrid);
-            StartCoroutine(IEAstar(waitTime, grid, nextNode, end, coordinateGrid, numItterations+1));
+            Coordinate2D nextNode = GetNextNode(_node, minHeuristic, trail);
+            StartCoroutine(IEAstar(waitTime, grid, nextNode, end, trail, numItterations+1));
         }
 
         yield return null;
@@ -122,8 +101,8 @@ public class Pathfind2D : MonoBehaviour
         return (float)(node1.i - node2.i) * (node1.i - node2.i) + (node1.j - node2.j) * (node1.j - node2.j);
     }
 
-    public float ManhattanDistance(Coordinate2D node1, Coordinate2D node2)
+    public float ManhattanDistance(Coordinate2D cell1, Coordinate2D cell2)
     {
-        return (float)(Mathf.Abs((node1.i - node2.i)) + Mathf.Abs((node1.j - node2.j)));
+        return (float)(Mathf.Abs((cell1.i - cell2.i)) + Mathf.Abs((cell1.j - cell2.j)));
     }
 }

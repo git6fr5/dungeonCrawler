@@ -7,15 +7,13 @@ public class Coordinate2D
 {
     [HideInInspector] public int i;
     [HideInInspector] public int j;
-    [HideInInspector] public float distance;
-    [HideInInspector] public float heuristic;
+    [HideInInspector] public float distance = 1000000;
     [HideInInspector] public Coordinate2D endPath;
 
-    public Coordinate2D(int _i, int _j, int[][] coordinateGrid)
+    public Coordinate2D(int _i, int _j)
     {
         i = _i;
         j = _j;
-        
     }
 
     // corners
@@ -32,13 +30,9 @@ public class Coordinate2D
 
     public static Coordinate2D[] directions = new Coordinate2D[] { north, northEast, east, southEast, south, southWest, west, northWest };
 
-    public Coordinate2D Move(Coordinate2D direction, Coordinate2D[][] coordinateGrid)
+    public Coordinate2D Move(Coordinate2D direction)
     {
-        if (coordinateGrid[i + direction.i][j + direction.j]) 
-        { 
-            return coordinateGrid[i + direction.i][j + direction.j]; 
-        }
-        return new Coordinate2D(i + direction.i, j + direction.j, coordinateGrid);
+        return new Coordinate2D(i + direction.i, j + direction.j);
     }
 
     public List<Coordinate2D> Adjacent()
@@ -63,23 +57,12 @@ public class Coordinate2D
         return (grid[i][j] == 0);
     }
 
-    public void MakePathTo(int[][] grid, Coordinate2D _startPath, Coordinate2D _endPath, float _heuristic, Coordinate2D[][] coordinateGrid)
+    public List<Coordinate2D> MakePathTo(int[][] grid, Coordinate2D _endPath, float _distance, List<Coordinate2D> trail)
     {
-        if (_heuristic < heuristic || heuristic == 0)
-        {
-            heuristic = _heuristic;
-        }
-        startPath = _startPath;
+        distance = _distance;
         endPath = _endPath;
         grid[i][j] = 15;
-        coordinateGrid[i][j] = this;
-    }
-
-    public void SetDistance(float distance)
-    {
-        if (_distance < distance || distance == 0)
-        {
-            distance = _distance;
-        }
+        trail.Add(this);
+        return trail;
     }
 }

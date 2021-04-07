@@ -7,13 +7,22 @@ public class Coordinate2D
 {
     [HideInInspector] public int i;
     [HideInInspector] public int j;
-    [HideInInspector] public float distance = 1000000;
+    [HideInInspector] public float distance;
+    [HideInInspector] public float heuristic;
     [HideInInspector] public Coordinate2D endPath;
+    [HideInInspector] public Coordinate2D startPath;
 
     public Coordinate2D(int _i, int _j)
     {
         i = _i;
         j = _j;
+    }
+
+    public Coordinate2D(int _i, int _j, Coordinate2D[][] coordinateGrid)
+    {
+        i = _i;
+        j = _j;
+        coordinateGrid[i][j] = this;
     }
 
     // corners
@@ -30,39 +39,56 @@ public class Coordinate2D
 
     public static Coordinate2D[] directions = new Coordinate2D[] { north, northEast, east, southEast, south, southWest, west, northWest };
 
-    public Coordinate2D Move(Coordinate2D direction)
+    public Coordinate2D Move(Coordinate2D direction, int[][] grid, Coordinate2D[][] coordinateGrid)
     {
-        return new Coordinate2D(i + direction.i, j + direction.j);
+        if (!IsValidMove(i + direction.i, j + direction.j, coordinateGrid)) { return null; } // Check if its a valid coordinate
+        if (!IsEmpty(i + direction.i, j + direction.j, grid)) { return null; } // Check if its an empt
+        if (coordinateGrid[i + direction.i][j + direction.j] != null) 
+        {
+            return coordinateGrid[i + direction.i][j + direction.j]; // Return the coordinate if it already exists
+        }
+        return new Coordinate2D(i + direction.i, j + direction.j, coordinateGrid); // Return a new coordinate if it doesn't exist
     }
 
-    public List<Coordinate2D> Adjacent()
+    public List<Coordinate2D> Adjacent(int[][] grid, Coordinate2D[][] coordinateGrid)
     {
         List<Coordinate2D> adjacent = new List<Coordinate2D>();
         foreach (Coordinate2D direction in directions)
         {
-            adjacent.Add(this.Move(direction));
+            Coordinate2D adjacentNode = this.Move(direction, grid, coordinateGrid);
+            if (adjacentNode != null)
+            {
+                adjacent.Add(adjacentNode);
+            }
         }
         return adjacent;
     }
 
-    public bool IsValid(int[][] grid)
+    public bool IsValidMove(int _i, int _j, Coordinate2D[][] coordinateGrid)
     {
         //Debug.Log(String.Format("{0}, {1}", i, j));
-        return (i < grid.Length && i > 0 && j < grid[0].Length && j > 0);
+        return (_i < coordinateGrid.Length && _i >= 0 && _j < coordinateGrid[0].Length && _j >= 0);
     }
 
-    public bool IsEmpty(int[][] grid)
+    public bool IsEmpty(int _i, int _j, int[][] grid)
     {
         //Debug.Log(String.Format("{0}, {1}", i, j));
-        return (grid[i][j] == 0);
+        return (grid[_i][_j] == 0);
     }
 
-    public List<Coordinate2D> MakePathTo(int[][] grid, Coordinate2D _endPath, float _distance, List<Coordinate2D> trail)
+    public void SetHeuristic(float _heuristic)
     {
-        distance = _distance;
-        endPath = _endPath;
-        grid[i][j] = 15;
-        trail.Add(this);
-        return trail;
+        if (_heuristic < heuristic || heuristic == 0)
+        {
+            heuristic = _heuristic;
+        }
+    }
+
+    public void SetDistance(float _distance)
+    {
+        if (_distance < distance || distance == 0)
+        {
+            distance = _distance;
+        }
     }
 }
